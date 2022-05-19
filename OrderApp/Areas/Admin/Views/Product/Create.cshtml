@@ -1,0 +1,35 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Yeni Ürün Ekle</h2>
+<form method="post">
+    <div class="row my-1">
+        <label asp-for="Name">Ürün Adı</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="row my-1">
+        <label asp-for="Description">Ürün Açıklama</label>
+        <input asp-for="Description" class="form-control" />
+    </div>
+    <div class="row my-1">
+        <label asp-for="Price">Ürün Fiyatı</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+    <div class="row my-1">
+        <label asp-for="Barcode">Ürün Barkodu</label>
+        <input asp-for="Barcode" class="form-control" />
+    </div>
+    <div class="row my-1">
+        <label asp-for="CategoryId">Ürün Kategorisi</label>
+        <input asp-for="CategoryId" class="form-control" />
+    </div>
+    <div class="row my-1">
+        <label asp-for="Picture">Ürün Resmi</label>
+        <input asp-for="Picture" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Ekle</button>
+</form>
+
