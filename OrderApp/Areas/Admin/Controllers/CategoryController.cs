@@ -21,12 +21,14 @@ namespace OrderApp.Areas.Admin.Controllers
             return View(CategoriesList);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Category Category)
         {
             if (ModelState.IsValid)
@@ -38,6 +40,58 @@ namespace OrderApp.Areas.Admin.Controllers
             }
 
             return View(Category);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id <= 0)
+            {
+                return NotFound();
+            }
+
+            var Category = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
+
+            if (Category == null)
+            {
+                return NotFound();
+            }
+
+            return View(Category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Category Category)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Category.Update(Category);
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
+            }
+
+            return View(Category);
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id < 0)
+            {
+                return NotFound();
+            }
+
+            var Category = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
+
+            if (Category == null)
+            {
+                return NotFound();
+            }
+
+            _unitOfWork.Category.Remove(Category);
+            _unitOfWork.Save();
+
+            return RedirectToAction("Index");
         }
     }
 }

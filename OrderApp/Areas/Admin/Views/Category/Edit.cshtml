@@ -1,12 +1,12 @@
-﻿@model Category
-
-@{
-    ViewData["Title"] = "Kategori Ekle";
+﻿@{
+    ViewData["Title"] = "Kategori Güncelle";
 }
 
-<form method="post">
+@model Category
 
-    <h2>Yeni Kategori Ekleme Formu</h2>
+<form method="post" asp-action="Edit">
+
+    <h2>Kategori Güncelle</h2>
     <div class="row">
         <label asp-for="Name">Kategori Adı</label>
         <input asp-for="Name" class="form-control" />
@@ -14,10 +14,10 @@
     <div class="row my-2">
         <div class="col-6">
             <button type="submit" class="btn btn-success">
-                Ekle
+                Kaydet
             </button>
         </div>
-        <div class="col-6"><a asp-controller="Category" asp-action="Index" class="btn btn-primary"> Geri Dön  </a></div>
+        <div class="col-6"><a asp-controller="Category" asp-action="Index" class="btn btn-primary">Geri Dön </a></div>
     </div>
 </form>
 
