@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OrderApp.Data.Repositories.IRepositories
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         IAppUserRepository AppUser { get; }
         ICartRepository Cart { get; }

@@ -28,6 +28,12 @@ namespace OrderApp.Data.Repositories
 
         public IProductRepository Product => new ProductRepository(_context);
 
+        //Performansi Arttirmak Icin → Ram de Tutulmasin diye
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+
         public void Save()
         {
             _context.SaveChanges();
