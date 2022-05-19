@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OrderApp.Models;
 
 namespace OrderApp.Data
 {
@@ -9,5 +10,12 @@ namespace OrderApp.Data
             : base(options)
         {
         }
+
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<OrderProduct> Order { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }
