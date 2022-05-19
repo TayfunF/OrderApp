@@ -20,5 +20,24 @@ namespace OrderApp.Areas.Admin.Controllers
 
             return View(CategoriesList);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Category Category)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Category.Add(Category);
+                _unitOfWork.Save();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(Category);
+        }
     }
 }
