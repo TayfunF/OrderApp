@@ -5,7 +5,7 @@
 }
 
 <h2>Yeni Ürün Ekle</h2>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <div class="row my-1">
         <label asp-for="Name">Ürün Adı</label>
         <input asp-for="Name" class="form-control" />
@@ -28,7 +28,7 @@
     </div>
     <div class="row my-1">
         <label asp-for="Picture">Ürün Resmi</label>
-        <input asp-for="Picture" class="form-control" />
+        <input type="file" id="UploadImg" name="UploadImg" class="form-control"/>
     </div>
     <button type="submit" class="btn btn-primary">Ekle</button>
 </form>
