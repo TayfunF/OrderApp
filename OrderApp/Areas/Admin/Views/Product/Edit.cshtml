@@ -1,10 +1,10 @@
 ﻿@model Product
 
 @{
-    ViewData["Title"] = "Ürün Ekle";
+    ViewData["Title"] = "Ürün Düzenle";
 }
 
-<h2>Yeni Ürün Ekle</h2>
+<h2>Ürün Güncelle</h2>
 <form method="post">
     <div class="row my-1">
         <label asp-for="Name">Ürün Adı</label>
@@ -30,6 +30,5 @@
         <label asp-for="Picture">Ürün Resmi</label>
         <input asp-for="Picture" class="form-control" />
     </div>
-    <button type="submit" class="btn btn-primary">Ekle</button>
+    <button type="submit" class="btn btn-primary">Kaydet</button>
 </form>
-
