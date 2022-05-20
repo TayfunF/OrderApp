@@ -1,0 +1,60 @@
+﻿@model IEnumerable<OrderProduct>
+
+@{
+    ViewData["Title"] = "Siparişler";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h2>Siparişler</h2>
+        </div>
+        <div class="col-6">
+            <a asp-controller="Product" asp-action="CreateOrUpdate" class="btn btn-primary ">
+                <span>Yeni Sipariş Ekle</span>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-bordered table-striped my-2">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Ad Soyad
+                    </th>
+                    <th>
+                        Fiyat
+                    </th>
+                    <th>
+                        İşlemler
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var OrderProduct in Model)
+                {
+                    <tr>
+                        <td><img src="@OrderProduct.Id" style="width:75px;"></td>
+                        <td>@OrderProduct.Name</td>
+                        <td>@OrderProduct.OrderPrice ₺</td>
+                        <td>
+                            <a asp-controller="Product" asp-action="CreateOrUpdate" asp-route-id="@OrderProduct.Id" class="btn btn-success">
+                                Güncelle
+                            </a>
+
+                            <a onclick="return confirm('Silmek İstediğinize emin misiniz?');" asp-controller="Product" asp-action="Delete" asp-route-id="@OrderProduct.Id" class="btn btn-danger">
+                                Sil
+                            </a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
