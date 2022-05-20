@@ -1,0 +1,36 @@
+﻿@model ProductCategoryListVM
+
+@{
+    ViewData["Title"] = (Model.Product.Id <= 0 ? "Ekle" : "Güncelle");
+}
+
+<h2>@((Model.Product.Id <= 0 ? "Ürün Ekle" : "Ürün Güncelle"))</h2>
+<form method="post">
+    <div class="row my-1">
+        <label asp-for="Product.Name">Ürün Adı</label>
+        <input asp-for="Product.Name" class="form-control" />
+    </div>
+    <div class="row my-1">
+        <label asp-for="Product.Description">Ürün Açıklama</label>
+        <input asp-for="Product.Description" class="form-control" />
+    </div>
+    <div class="row my-1">
+        <label asp-for="Product.Price">Ürün Fiyatı</label>
+        <input asp-for="Product.Price" class="form-control" />
+    </div>
+    <div class="row my-1">
+        <label asp-for="Product.Barcode">Ürün Barkodu</label>
+        <input asp-for="Product.Barcode" class="form-control" />
+    </div>
+    <div class="row my-1">
+        <label asp-for="Product.CategoryId">Ürün Kategorisi</label>
+        <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-control">
+            <option disabled selected>--Lütfen Bir Kategori Seçiniz--</option>
+        </select>
+    </div>
+    <div class="row my-1">
+        <label asp-for="Product.Picture">Ürün Resmi</label>
+        <input asp-for="Product.Picture" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">@(Model.Product.Id <= 0 ? "Ekle" : "Güncelle")</button>
+</form>

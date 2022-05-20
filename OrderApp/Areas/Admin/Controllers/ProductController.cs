@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrderApp.Data.Repositories.IRepositories;
 using OrderApp.Models;
+using OrderApp.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace OrderApp.Areas.Admin.Controllers
 {
@@ -21,44 +23,49 @@ namespace OrderApp.Areas.Admin.Controllers
             return View(ProductList);
         }
 
+
+        //1 Sayfada Hem Create Hem Update Yapabilmek Icin
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult CreateOrUpdate(int? id)
         {
-            return View();
-        }
+            ProductCategoryListVM ProductCategoryListVM = new()
+            {
+                Product = new(),
+                CategoryList = _unitOfWork.Category.GetAll().Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                })
+            };
 
-        [HttpPost]
-        public IActionResult Create(Product product)
-        {
-            _unitOfWork.Product.Add(product);
-            _unitOfWork.Save();
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public IActionResult Edit(int? id)
-        {
             if (id == null || id <= 0)
             {
-                return NotFound();
+                return View(ProductCategoryListVM);
             }
 
-            var Product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
+            ProductCategoryListVM.Product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
 
-            if (Product == null)
+            if (ProductCategoryListVM.Product == null)
             {
-                return NotFound();
+                return View(ProductCategoryListVM);
             }
 
-            return View(Product);
+            return View(ProductCategoryListVM);
         }
 
         [HttpPost]
-        public IActionResult Edit(Product Product)
+        public IActionResult CreateOrUpdate(ProductCategoryListVM ProductCategoryListVM)
         {
-            _unitOfWork.Product.Update(Product);
+            if (ProductCategoryListVM.Product.Id <= 0)
+            {
+                _unitOfWork.Product.Add(ProductCategoryListVM.Product);
+            }
+            else
+            {
+                _unitOfWork.Product.Update(ProductCategoryListVM.Product);
+            }
             _unitOfWork.Save();
+
             return RedirectToAction("Index");
         }
 

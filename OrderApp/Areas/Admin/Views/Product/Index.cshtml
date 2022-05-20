@@ -11,7 +11,7 @@
             <h2>Ürünler Listesi</h2>
         </div>
         <div class="col-6">
-            <a asp-controller="Product" asp-action="Create" class="btn btn-primary ">
+            <a asp-controller="Product" asp-action="CreateOrUpdate" class="btn btn-primary ">
                 <span>Yeni Ürün Ekle</span>
             </a>
         </div>
@@ -38,7 +38,7 @@
                         <td>@product.Name</td>
                         <td>@product.Price ₺</td>
                         <td>
-                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning">
+                            <a asp-controller="Product" asp-action="CreateOrUpdate" asp-route-id="@product.Id" class="btn btn-warning">
                                 Güncelle
                             </a>
 
