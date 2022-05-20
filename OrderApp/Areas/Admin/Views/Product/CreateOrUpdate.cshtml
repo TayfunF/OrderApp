@@ -5,7 +5,17 @@
 }
 
 <h2>@((Model.Product.Id <= 0 ? "Ürün Ekle" : "Ürün Güncelle"))</h2>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="Product.Id" type="hidden" />
+    <input asp-for="Product.Picture" type="hidden" />
+
+    @if (@Model !=null)
+    {
+        <div class="col-6">
+            <img src="@Model.Product.Picture" style="width:150px;">
+        </div>
+    }
+
     <div class="row my-1">
         <label asp-for="Product.Name">Ürün Adı</label>
         <input asp-for="Product.Name" class="form-control" />
@@ -30,7 +40,7 @@
     </div>
     <div class="row my-1">
         <label asp-for="Product.Picture">Ürün Resmi</label>
-        <input asp-for="Product.Picture" class="form-control" />
+        <input type="file" id="UploadedImage" name="UploadedImage" accept="img/*" class="form-control" />
     </div>
     <button type="submit" class="btn btn-primary">@(Model.Product.Id <= 0 ? "Ekle" : "Güncelle")</button>
 </form>

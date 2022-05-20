@@ -55,31 +55,31 @@ namespace OrderApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOrUpdate(ProductCategoryListVM ProductCategoryListVM, IFormFile file)
+        public IActionResult CreateOrUpdate(ProductCategoryListVM ProductCategoryListVM, IFormFile UploadedImage)
         {
-            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            string WwwRootPath = _webHostEnvironment.WebRootPath;
 
-            if (file != null)
+            if (UploadedImage != null)
             {
-                string fileName = Guid.NewGuid().ToString(); //Benzersiz Id
-                var uploadRoot = Path.Combine(wwwRootPath, @"img\products");
-                var extension = Path.GetExtension(file.FileName);
+                string FileName = Guid.NewGuid().ToString(); //Benzersiz Resim Adi Icin
+                var UploadRoot = Path.Combine(WwwRootPath, @"img\products");
+                var Extension = Path.GetExtension(UploadedImage.FileName);
 
                 if (ProductCategoryListVM.Product.Picture != null)
                 {
-                    var oldPicPath = Path.Combine(wwwRootPath, ProductCategoryListVM.Product.Picture);
-                    if (System.IO.File.Exists(oldPicPath))
+                    var OldPicPath = Path.Combine(WwwRootPath, ProductCategoryListVM.Product.Picture);
+                    if (System.IO.File.Exists(OldPicPath))
                     {
-                        System.IO.File.Delete(oldPicPath);
+                        System.IO.File.Delete(OldPicPath);
                     }
                 }
 
-                using (var fileStream = new FileStream(Path.Combine(uploadRoot, fileName + extension), FileMode.Create))
+                using (var fileStream = new FileStream(Path.Combine(UploadRoot, FileName + Extension), FileMode.Create))
                 {
-                    file.CopyTo(fileStream);
+                    UploadedImage.CopyTo(fileStream);
                 }
 
-                ProductCategoryListVM.Product.Picture = @"img\products\" + fileName + extension;
+                ProductCategoryListVM.Product.Picture = @"\img\products\" + FileName + Extension;
             }
 
             if (ProductCategoryListVM.Product.Id <= 0)

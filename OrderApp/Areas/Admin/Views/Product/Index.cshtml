@@ -21,6 +21,9 @@
             <thead>
                 <tr>
                     <th>
+                        Ürün Resmi
+                    </th>
+                    <th>
                         Ürün Adı
                     </th>
                     <th>
@@ -35,10 +38,11 @@
                 @foreach (var product in Model)
                 {
                     <tr>
+                        <td><img src="@product.Picture" style="width:75px;"></td>
                         <td>@product.Name</td>
                         <td>@product.Price ₺</td>
                         <td>
-                            <a asp-controller="Product" asp-action="CreateOrUpdate" asp-route-id="@product.Id" class="btn btn-warning">
+                            <a asp-controller="Product" asp-action="CreateOrUpdate" asp-route-id="@product.Id" class="btn btn-success">
                                 Güncelle
                             </a>
 
