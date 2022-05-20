@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OrderApp.Data\OrderApp.Data.csproj" />
+    <ProjectReference Include="..\OrderApp.SharedTools\OrderApp.SharedTools.csproj" />
   </ItemGroup>
 
   <ItemGroup>
