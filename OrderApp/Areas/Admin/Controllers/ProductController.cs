@@ -10,10 +10,11 @@ namespace OrderApp.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -54,8 +55,33 @@ namespace OrderApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOrUpdate(ProductCategoryListVM ProductCategoryListVM)
+        public IActionResult CreateOrUpdate(ProductCategoryListVM ProductCategoryListVM, IFormFile file)
         {
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+            if (file != null)
+            {
+                string fileName = Guid.NewGuid().ToString(); //Benzersiz Id
+                var uploadRoot = Path.Combine(wwwRootPath, @"img\products");
+                var extension = Path.GetExtension(file.FileName);
+
+                if (ProductCategoryListVM.Product.Picture != null)
+                {
+                    var oldPicPath = Path.Combine(wwwRootPath, ProductCategoryListVM.Product.Picture);
+                    if (System.IO.File.Exists(oldPicPath))
+                    {
+                        System.IO.File.Delete(oldPicPath);
+                    }
+                }
+
+                using (var fileStream = new FileStream(Path.Combine(uploadRoot, fileName + extension), FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+
+                ProductCategoryListVM.Product.Picture = @"img\products\" + fileName + extension;
+            }
+
             if (ProductCategoryListVM.Product.Id <= 0)
             {
                 _unitOfWork.Product.Add(ProductCategoryListVM.Product);
