@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using OrderApp.Models;
 
 namespace OrderApp.Areas.Identity.Pages.Account
 {
@@ -100,6 +101,12 @@ namespace OrderApp.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            public string FullName { get; set; }
+            public string Address { get; set; }
+            public string PostalCode { get; set; }
+            public string CellPhone { get; set; }
         }
 
 
@@ -110,7 +117,7 @@ namespace OrderApp.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole("Admin")).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole("Customer")).GetAwaiter().GetResult();
             }
-           
+
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -126,6 +133,12 @@ namespace OrderApp.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                user.FullName = Input.FullName;
+                user.Address = Input.Address;
+                user.PostalCode = Input.PostalCode;
+                user.CellPhone = Input.CellPhone;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -164,11 +177,11 @@ namespace OrderApp.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private AppUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<AppUser>();
             }
             catch
             {
