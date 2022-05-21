@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using OrderApp.Data.Repositories.IRepositories;
 using OrderApp.Models;
 
 namespace OrderApp.Areas.Identity.Pages.Account
@@ -31,6 +32,7 @@ namespace OrderApp.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -38,7 +40,8 @@ namespace OrderApp.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -47,6 +50,7 @@ namespace OrderApp.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -80,7 +84,7 @@ namespace OrderApp.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "E-Posta")]
             public string Email { get; set; }
 
             /// <summary>
@@ -90,7 +94,7 @@ namespace OrderApp.Areas.Identity.Pages.Account
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Şifre")]
             public string Password { get; set; }
 
             /// <summary>
@@ -98,8 +102,8 @@ namespace OrderApp.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Şire Tekrar")]
+            [Compare("Password", ErrorMessage = "Şifre tekrarı şifre ile aynı değil")]
             public string ConfirmPassword { get; set; }
 
             [Required]
@@ -140,6 +144,11 @@ namespace OrderApp.Areas.Identity.Pages.Account
                 user.CellPhone = Input.CellPhone;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+                AppUser appUser = _unitOfWork.AppUser.GetFirstOrDefault(x => x.Email == user.Email);
+
+                _userManager.AddToRoleAsync(appUser, "Customer").GetAwaiter().GetResult();
+
 
                 if (result.Succeeded)
                 {
